@@ -29,17 +29,14 @@ for(my $j = 0; $j <= $N; $j++)
     for(my $i = 0; $i <= $M; $i++)
     {
         #init
-        if($i == 0 && $j == 0) 
-        { 
+        if($i == 0 && $j == 0)  { 
             $ptr[0] = "O";
         }
-        elsif($j == 0) 
-        { 
+        elsif($j == 0)  { 
             $score[$i] = $i * $d; 
             $ptr[$i] = "LEFT";
         }
-        elsif($i == 0) 
-        { 
+        elsif($i == 0) { 
             $score[$j*($M+1)] = $j * $d; 
             $ptr[$j*($M+1)] = "UP";
         }
@@ -61,19 +58,14 @@ for(my $j = 0; $j <= $N; $j++)
     }
 
 }
-  
+################################################################  
 print "         ";
-foreach (@v) {
-  printf " %4s ",$_;
-}    
+foreach (@v) { printf " %4s ",$_;}    
 print "\n";
-for(my $j = 0; $j <= $N; $j++)
-{
-    for(my $i = 0; $i <= $M; $i++)
-    {
+for(my $j = 0; $j <= $N; $j++){
+    for(my $i = 0; $i <= $M; $i++){
         if( $i == 0 && $j != 0){printf "%2s ",$w[$j - 1];}
         elsif($i == 0 && $j == 0){print "   ";};
-     
         printf " %4d ",$score[$j*($M+1)+$i];
     }
     print "\n";
@@ -82,39 +74,31 @@ print "\n";
 
 
 print "         ";
-foreach (@v) {
-  printf " %4s ",$_;
-}    
+foreach (@v) { printf " %4s ",$_;}    
 print "\n";
-for(my $j = 0; $j <= $N; $j++)
-{
-    for(my $i = 0; $i <= $M; $i++)
-    {
+for(my $j = 0; $j <= $N; $j++){
+    for(my $i = 0; $i <= $M; $i++){
         if( $i == 0 && $j != 0){printf "%2s ",$w[$j - 1];}
         elsif($i == 0 && $j == 0){print "   ";};
-     
         printf " %4s ",$ptr[$j*($M+1)+$i];
     }
     print "\n";
 }
 print "\n";
-
 ################################################################
-
 my $M_ = $M;
 my $N_ = $N;
 my @trace;
 while( $ptr[($M+1)*$N_+$M_] ne "O")
 {
-    print "$ptr[($M+1)*$N_+$M_]($M_,$N_)\n";
-    unshift(@trace,$ptr[($M+1)*$N_+$M_]);
-    if( $ptr[($M+1)*$N_+$M_] eq "DIAG")
-    {
+    my $now = $ptr[($M+1)*$N_+$M_];
+    print "$now ($M_,$N_)\n";
+    unshift(@trace,$now);
+    if( $now eq "DIAG"){
         $M_ -= 1;
         $N_ -= 1;
     }
-    elsif( $ptr[($M+1)*$N_+$M_] eq "LEFT")
-    {
+    elsif( $now  eq "LEFT"){
         $M_ -= 1;
     }
     else{
@@ -126,37 +110,32 @@ print "\n";
 ################################################################
 for (my $i = 0,$gap = 0; $i < @trace; $i++)
 {
-    if(scalar @trace == $M)
-    {
+    if(scalar @trace == $M){
         print $v[$i];
     }
     else{
-        if($trace[$i] eq "UP")
-        {
+        if($trace[$i] eq "UP"){
             print "_";
             $gap++;
         }
-        else
-        {
-            print $v[$i-$gap]
+        else{
+            print $v[$i-$gap];
         }
     }
 }
 print "\n";
+
 for (my $i = 0,$gap = 0; $i < @trace; $i++)
 {
-    if(scalar @trace == $N)
-    {
+    if(scalar @trace == $N){
         print $w[$i];
     }
     else{
-        if($trace[$i] eq "LEFT")
-        {
+        if($trace[$i] eq "LEFT"){
             print "_";
             $gap++;
         }
-        else
-        {
+        else{
             print $w[$i-$gap]
         }
     }
