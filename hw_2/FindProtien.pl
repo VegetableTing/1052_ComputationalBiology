@@ -1,21 +1,10 @@
-#>> perl toProtien.pl GGAGGCGTAAAATGCGTACTGGTAATGCAAACTAATGG
+#>> perl FindProtien.pl GGAGGCGTAAAATGCGTACTGGTAATGCAAACTAATGG
 
-sub Complement{
+sub DNAReverse {
 	my $output;
 	while( $_[0] =~ /(.)/g ) {
 		if( $1 eq "A" ) { $output .= "T"; }
 		elsif( $1 eq "T" ) { $output .= "A"; }
-		elsif( $1 eq "C" ) { $output .= "G"; }
-		elsif( $1 eq "G" ) { $output .= "C"; }
-	}
-	return $output;
-}
-
-sub mComplement{
-	my $output;
-	while( $_[0] =~ /(.)/g ) {
-		if( $1 eq "A" ) { $output .= "U"; }
-		elsif( $1 eq "U" ) { $output .= "A"; }
 		elsif( $1 eq "C" ) { $output .= "G"; }
 		elsif( $1 eq "G" ) { $output .= "C"; }
 	}
@@ -44,7 +33,7 @@ sub checkCodon{
 }
 
 my $conding = $ARGV[0];
-my $template = Complement($conding);
+my $template = DNAReverse($conding);
 print "5' $conding 3' [Coding strand]\n";
 print "3' $template 5' [Template strand]\n\n";
 

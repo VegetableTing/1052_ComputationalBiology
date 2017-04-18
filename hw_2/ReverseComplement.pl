@@ -9,8 +9,6 @@ sub ReverseComplement
 	{
 		if( $_ !~ /^>/ ) # not first line
 		{
-			$_ = scalar reverse $_; # reverse
-
 			while( /(.)/g ) # replace
 			{
 				if( $1 eq "A" ) { $output .= "T"; }
@@ -20,7 +18,7 @@ sub ReverseComplement
 			}
 		}
 	}
-	return $output;
+	return scalar reverse $output;
 }
 
 

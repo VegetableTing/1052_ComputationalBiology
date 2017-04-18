@@ -5,14 +5,14 @@
 #What is the score of the optimal global alignment and what alignment(s) achieves this score?
 #>>perl SequenceAlignment.pl TACGGGTAT GGACGTACG
 #>>perl SequenceAlignment.pl AGGCTATCACCTGACCTCCAGGCCGATGCCC TAGCTATCACGACCGCGGTCGATTTGCCCGAC
-
+#>>perl SequenceAlignment.pl AGGCTAGTT AGCGAAGTTT
 my $m = 1;
 my $s = -1;
 my $d = -1;
-my @v = split(undef,$ARGV[0]);
-my @w = split(undef,$ARGV[1]);
-my $M = scalar @v;
-my $N = scalar @w;
+@v = split(undef,$ARGV[0]);
+@w = split(undef,$ARGV[1]);
+$M = scalar @v;
+$N = scalar @w;
 
 my @score;
 my @ptr;
@@ -25,12 +25,55 @@ sub max {
     return $max;
 }
 
+sub showTable {
+    print "         ";
+    foreach (@v) { printf " %4s ",$_;}    
+    print "\n";
+    for(my $j = 0; $j <= $N; $j++){
+        for(my $i = 0; $i <= $M; $i++){
+            if( $i == 0 && $j != 0){printf "%2s ",$w[$j - 1];}
+            elsif($i == 0 && $j == 0){print "   ";};
+            printf " %4s ",$_[$j*($M+1)+$i];
+        }
+        print "\n";
+    }
+    print "\n";
+}
+
+sub showResult {
+    my ($which,$direct,@trace) = @_;
+    my @sequence = @v;
+
+    if ($which eq "w"){
+        @sequence = @w;
+    }
+
+    for (my $i = 0,$gap = 0; $i < @trace; $i++)
+    {
+        if(scalar @trace == $M){
+            print $sequence[$i];
+        }
+        else{
+            if($trace[$i] eq $direct){
+                print "_";
+                $gap++;
+            }
+            else{
+                print $sequence[$i-$gap];
+            }
+        }
+    }
+    print "\n";
+}
+################################################################
+#建表
 for(my $j = 0; $j <= $N; $j++)
 {
     for(my $i = 0; $i <= $M; $i++)
     {
         #init
         if($i == 0 && $j == 0)  { 
+            $score[0] = 0 ;
             $ptr[0] = "O";
         }
         elsif($j == 0)  { 
@@ -60,85 +103,31 @@ for(my $j = 0; $j <= $N; $j++)
 
 }
 ################################################################  
-print "         ";
-foreach (@v) { printf " %4s ",$_;}    
-print "\n";
-for(my $j = 0; $j <= $N; $j++){
-    for(my $i = 0; $i <= $M; $i++){
-        if( $i == 0 && $j != 0){printf "%2s ",$w[$j - 1];}
-        elsif($i == 0 && $j == 0){print "   ";};
-        printf " %4d ",$score[$j*($M+1)+$i];
-    }
-    print "\n";
-}
-print "\n";
-
-
-print "         ";
-foreach (@v) { printf " %4s ",$_;}    
-print "\n";
-for(my $j = 0; $j <= $N; $j++){
-    for(my $i = 0; $i <= $M; $i++){
-        if( $i == 0 && $j != 0){printf "%2s ",$w[$j - 1];}
-        elsif($i == 0 && $j == 0){print "   ";};
-        printf " %4s ",$ptr[$j*($M+1)+$i];
-    }
-    print "\n";
-}
-print "\n";
+#印出走訪的結果
+print "[Score Table]\n";
+showTable(@score);
+print "[Path Table]\n";
+showTable(@ptr);
 ################################################################
-my $M_ = $M;
-my $N_ = $N;
+print "[Trace Back]\n";
+my $temp_M = $M;
+my $temp_N = $N;
 my @trace;
-while( $ptr[($M+1)*$N_+$M_] ne "O")
+while($ptr[($M+1)*$temp_N+$temp_M] ne "O")
 {
-    my $now = $ptr[($M+1)*$N_+$M_];
-    print "$now ($M_,$N_)\n";
-    unshift(@trace,$now);
-    if( $now eq "DIAG"){
-        $M_ -= 1;
-        $N_ -= 1;
-    }
-    elsif( $now  eq "LEFT"){
-        $M_ -= 1;
-    }
-    else{
-        $N_ -= 1;
-    }
-     
-}
-print "\n";
-################################################################
-for (my $i = 0,$gap = 0; $i < @trace; $i++)
-{
-    if(scalar @trace == $M){
-        print $v[$i];
-    }
-    else{
-        if($trace[$i] eq "UP"){
-            print "_";
-            $gap++;
-        }
-        else{
-            print $v[$i-$gap];
-        }
-    }
-}
-print "\n";
+    my $now = $ptr[($M+1)*$temp_N+$temp_M];
+   
+    print "$now ($temp_M,$temp_N)\n";
 
-for (my $i = 0,$gap = 0; $i < @trace; $i++)
-{
-    if(scalar @trace == $N){
-        print $w[$i];
-    }
-    else{
-        if($trace[$i] eq "LEFT"){
-            print "_";
-            $gap++;
-        }
-        else{
-            print $w[$i-$gap]
-        }
-    }
+    unshift(@trace,$now);
+    if($now eq "DIAG"){ $temp_M -= 1; $temp_N -= 1; }
+    elsif($now  eq "LEFT"){ $temp_M -= 1; }
+    elsif($now  eq "UP"){ $temp_N -= 1; }
 }
+################################################################
+print "\n[Result]\n";
+showResult("v","UP",@trace);
+showResult("w","LEFT",@trace);
+
+
 

@@ -1,0 +1,18 @@
+Q3.(30 pts) You are given the following DNA sequence, which is believed to contain a small protein-coding gene.
+GGAGGCGTAA AATGCGTACT GGTAATGCAA ACTAATGG
+
+1.If this sequence is fully transcribed (used as a codingstrand), what is the corresponding mRNA sequence?
+GGAGGCGUAA AAUGCGUACU GGUAAUGCAA ACUAAUGG
+
+2.Which region of the mRNA do you think can be translatedinto a protein (hint: Can you identify the start codon and stop codon from themRNA sequence?)
+(AUG)CGU ACUGGUAAUGCAA AC(UAA)
+(start)                  (stop)
+
+3.What is the protein sequence encoded by the gene?
+(start) Arg - Thr - Gly - Asn - Ala - Asn (stop)
+
+4.If the reverse-complementary strand of the DNA sequenceis also transcribed, what will be the mRNA sequence?
+CCAUUAGUUUGCAUUACCAGUACGCAUUUUACGCCUCC
+
+5.Do you think the reverse-complementary strand can encodea protein?
+不行，因為找不到start codon，只有stop codon沒辦法轉錄成蛋白質
