@@ -2,25 +2,30 @@
 #>> perl ReverseComplement.pl example1.fa
 #CGATAATTTCCTCACTATTATCGGAATAAAGCGGATAAGGGCACAGGTGACAGCGAACACTAATATATTAGCACGGACCTCATCTTTGGAGCGCTCCTCAATTCTAATCGGCTCAATGGACAGTGTGCGAAACAT
 
-my $output = "";
-open FASTA, "< $ARGV[0]";
-
-while( <FASTA>)
+sub ReverseComplement
 {
-	if( $_ !~ /^>/ ) # not first line
+	my $output = "";
+	for( @_ )
 	{
-		$_ = scalar reverse $_; # reverse
-
-		while( /(.)/g ) # replace
+		if( $_ !~ /^>/ ) # not first line
 		{
-			if( $1 eq "A" ) { $output .= "T"; }
-			elsif( $1 eq "T" ) { $output .= "A"; }
-			elsif( $1 eq "C" ) { $output .= "G"; }
-			elsif( $1 eq "G" ) { $output .= "C"; }
+			$_ = scalar reverse $_; # reverse
+
+			while( /(.)/g ) # replace
+			{
+				if( $1 eq "A" ) { $output .= "T"; }
+				elsif( $1 eq "T" ) { $output .= "A"; }
+				elsif( $1 eq "C" ) { $output .= "G"; }
+				elsif( $1 eq "G" ) { $output .= "C"; }
+			}
 		}
 	}
-} 
+	return $output;
+}
 
+
+open FASTA, "< $ARGV[0]";
+print ReverseComplement(<FASTA>);
 close FASTA;
 
-print $output;
+

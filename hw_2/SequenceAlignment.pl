@@ -4,6 +4,7 @@
 #Draw arrowsin the cells to store traceback information. 
 #What is the score of the optimal global alignment and what alignment(s) achieves this score?
 #>>perl SequenceAlignment.pl TACGGGTAT GGACGTACG
+#>>perl SequenceAlignment.pl AGGCTATCACCTGACCTCCAGGCCGATGCCC TAGCTATCACGACCGCGGTCGATTTGCCCGAC
 
 my $m = 1;
 my $s = -1;
