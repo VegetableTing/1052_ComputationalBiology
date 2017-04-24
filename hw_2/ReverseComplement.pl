@@ -11,10 +11,9 @@ sub ReverseComplement
 		{
 			while( /(.)/g ) # replace
 			{
-				if( $1 eq "A" ) { $output .= "T"; }
-				elsif( $1 eq "T" ) { $output .= "A"; }
-				elsif( $1 eq "C" ) { $output .= "G"; }
-				elsif( $1 eq "G" ) { $output .= "C"; }
+				$_ =~ tr/ATCG/TAGC/;
+				chomp $_;
+				$output = $_; 
 			}
 		}
 	}
